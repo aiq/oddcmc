@@ -34,11 +34,18 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/FileLists.cmake )
 fetchcontent_declare(
     oddebml
     GIT_REPOSITORY "https://github.com/aiq/oddebml"
-    GIT_TAG "5ac025024e0ea8f5dd1ac39ecc0c93df22d46a18"
+    GIT_TAG "fbd56b953aaf24de170c4fa57174fc6e2bc68ac6"
+    SOURCE_SUBDIR "mk/cmake"
 )
+fetchcontent_makeavailable( oddebml )
 
-fetchcontent_populate( oddebml )
-add_subdirectory( ${oddebml_SOURCE_DIR}/mk/cmake ${oddebml_BINARY_DIR} )
+fetchcontent_declare(
+    iso639
+    GIT_REPOSITORY "https://github.com/aiq/iso639"
+    GIT_TAG "f2deb6f8ab54f4b2cae1aec7582263dec3d3f720"
+    SOURCE_SUBDIR "mk/cmake"
+)
+fetchcontent_makeavailable( iso639 )
 
 ################################################################################
 # build - make
@@ -46,15 +53,15 @@ add_subdirectory( ${oddebml_SOURCE_DIR}/mk/cmake ${oddebml_BINARY_DIR} )
 add_library( ${LIB_NAME} SHARED ${SRC_FILES} )
 target_include_directories( ${LIB_NAME} PUBLIC ${INC_DIR} PRIVATE ${SRC_DIR} )
 if( WIN32 )
-    target_link_libraries( ${LIB_NAME} oddebml )
+    target_link_libraries( ${LIB_NAME} oddebml iso639 )
 else()
-    target_link_libraries( ${LIB_NAME} PUBLIC m oddebml )
+    target_link_libraries( ${LIB_NAME} PUBLIC m oddebml iso639 )
 endif()
 
 set( TEST_INC_DIRS ${INC_DIR} ${SRC_DIR} )
 if( WIN32 )
-    set( TEST_LINK_LIBS ${LIB_NAME} oddebml )
+    set( TEST_LINK_LIBS ${LIB_NAME} oddebml iso639 )
 else()
-    set( TEST_LINK_LIBS ${LIB_NAME} m oddebml )
+    set( TEST_LINK_LIBS ${LIB_NAME} m oddebml iso639 )
 endif()
 add_tests( "${TEST_FILES}" "${TEST_INC_DIRS}" "${TEST_LINK_LIBS}" )

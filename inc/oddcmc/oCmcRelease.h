@@ -3,6 +3,7 @@
 
 #include "clingo/string/CString.h"
 #include "clingo/time/cYmd.h"
+#include "iso639/cIso639.h"
 #include "oddcmc/apidecl.h"
 #include "oddebml/oEbmlElement.h"
 
@@ -19,7 +20,7 @@ struct oCmcRelease
    cYmd date;
    CString* publisher;
    CString* imprint;
-   CString* language;
+   cIso639 language;
 };
 typedef struct oCmcRelease oCmcRelease;
 

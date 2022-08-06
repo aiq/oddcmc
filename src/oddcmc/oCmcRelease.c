@@ -18,7 +18,6 @@ void deref_cmc_release_o( oCmcRelease rel[static 1] )
    release_c( rel->type );
    release_c( rel->publisher );
    release_c( rel->imprint );
-   release_c( rel->language );
    *rel = (oCmcRelease){0};
 }
 
@@ -131,8 +130,8 @@ bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
          return push_imp_exp_error_c( es, sca->err ) or
                 push_unmarshal_ebml_error_o( es, O_CmcLanguage.id, o_EbmlString );
 
-      rel->language = retain_c( make_string_c( language ) );
-      if ( rel->language == NULL )
+      rel->language = iso639_c( language );
+      if ( not is_iso639_bib_c( rel->language ) )
          return push_errno_error_c( es, ENOMEM );
    }
 
