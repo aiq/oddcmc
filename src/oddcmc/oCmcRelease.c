@@ -67,7 +67,7 @@ bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
    
       if ( not uint64_to_int32_c( year, &(rel->date.year) ) )
          return push_errno_error_c( es, ERANGE ) or
-                push_lit_str_error_c( es, "CMCReleaseYear value out of range" );
+                push_lit_error_c( es, "CMCReleaseYear value out of range" );
    }
 
    // -------------------------------------------------------------------- Month
@@ -80,7 +80,7 @@ bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
 
       if ( not uint64_to_month_c( month, &(rel->date.month ) ) )
          return push_errno_error_c( es, ERANGE ) or
-                push_lit_str_error_c( es, "CMCReleaseMonth value out of range" );
+                push_lit_error_c( es, "CMCReleaseMonth value out of range" );
    }
 
    // ---------------------------------------------------------------------- Day
@@ -93,7 +93,7 @@ bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
 
       if ( not uint64_to_int8_c( day, &(rel->date.day) ) )
          return push_errno_error_c( es, ERANGE ) or
-                push_lit_str_error_c( es, "CMCReleaseDay value out of range" );
+                push_lit_error_c( es, "CMCReleaseDay value out of range" );
    }
 
    // ---------------------------------------------------------------- Publisher

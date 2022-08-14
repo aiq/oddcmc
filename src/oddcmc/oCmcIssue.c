@@ -89,7 +89,7 @@ bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
    
       if ( not uint64_to_int32_c( year, &(issue->date.year) ) )
          return push_errno_error_c( es, ERANGE ) or
-                push_lit_str_error_c( es, "CMCIssueReleaseYear value out of range" );
+                push_lit_error_c( es, "CMCIssueReleaseYear value out of range" );
    }
 
    // -------------------------------------------------------------------- Month
@@ -103,7 +103,7 @@ bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
       uint8_t monthVal;
       if ( not uint64_to_uint8_c( month, &monthVal ) )
          return push_errno_error_c( es, ERANGE ) or
-                push_lit_str_error_c( es, "CMCIssueReleaseMonth value out of range" );
+                push_lit_error_c( es, "CMCIssueReleaseMonth value out of range" );
 
       issue->date.month = monthVal;
    }
@@ -118,7 +118,7 @@ bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
 
       if ( not uint64_to_int8_c( day, &(issue->date.day) ) )
          return push_errno_error_c( es, ERANGE ) or
-                push_lit_str_error_c( es, "CMCIssueReleaseDay value out of range" );
+                push_lit_error_c( es, "CMCIssueReleaseDay value out of range" );
    }
 
 

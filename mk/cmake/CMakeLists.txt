@@ -34,7 +34,7 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/FileLists.cmake )
 fetchcontent_declare(
     oddebml
     GIT_REPOSITORY "https://github.com/aiq/oddebml"
-    GIT_TAG "fbd56b953aaf24de170c4fa57174fc6e2bc68ac6"
+    GIT_TAG "afb7f72ee53543bb01d4cecc874796a555476ac3"
     SOURCE_SUBDIR "mk/cmake"
 )
 fetchcontent_makeavailable( oddebml )
@@ -42,7 +42,7 @@ fetchcontent_makeavailable( oddebml )
 fetchcontent_declare(
     iso639
     GIT_REPOSITORY "https://github.com/aiq/iso639"
-    GIT_TAG "f2deb6f8ab54f4b2cae1aec7582263dec3d3f720"
+    GIT_TAG "5371370e49f6f2d97525408c0d8e8fcb7aedb5e8"
     SOURCE_SUBDIR "mk/cmake"
 )
 fetchcontent_makeavailable( iso639 )
