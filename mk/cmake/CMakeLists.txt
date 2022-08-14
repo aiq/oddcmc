@@ -34,7 +34,7 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/FileLists.cmake )
 fetchcontent_declare(
     oddebml
     GIT_REPOSITORY "https://github.com/aiq/oddebml"
-    GIT_TAG "afb7f72ee53543bb01d4cecc874796a555476ac3"
+    GIT_TAG "638ae0b06fcf82195d695989e3556bfbfd54baac"
     SOURCE_SUBDIR "mk/cmake"
 )
 fetchcontent_makeavailable( oddebml )
