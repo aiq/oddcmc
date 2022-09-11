@@ -15,12 +15,12 @@ ODDCMC_API extern oEbmlDecl const O_CmcInfo;
 ODDCMC_API extern oEbmlDecl const O_CmcRelease;
 ODDCMC_API extern oEbmlDecl const O_CmcTitle;
 ODDCMC_API extern oEbmlDecl const O_CmcType;
+ODDCMC_API extern oEbmlDecl const O_CmcLanguage;
 ODDCMC_API extern oEbmlDecl const O_CmcReleaseYear;
 ODDCMC_API extern oEbmlDecl const O_CmcReleaseMonth;
 ODDCMC_API extern oEbmlDecl const O_CmcReleaseDay;
 ODDCMC_API extern oEbmlDecl const O_CmcPublisher;
 ODDCMC_API extern oEbmlDecl const O_CmcImprint;
-ODDCMC_API extern oEbmlDecl const O_CmcLanguage;
 
 ODDCMC_API extern oEbmlDecl const O_CmcCreators;
 ODDCMC_API extern oEbmlDecl const O_CmcCreator;
@@ -34,11 +34,11 @@ ODDCMC_API extern oEbmlDecl const O_CmcIssueSeries;
 ODDCMC_API extern oEbmlDecl const O_CmcIssueVolume;
 ODDCMC_API extern oEbmlDecl const O_CmcIssueNumber;
 ODDCMC_API extern oEbmlDecl const O_CmcIssueVariant;
+ODDCMC_API extern oEbmlDecl const O_CmcIssueLanguage;
+ODDCMC_API extern oEbmlDecl const O_CmcIssuePages;
 ODDCMC_API extern oEbmlDecl const O_CmcIssueReleaseYear;
 ODDCMC_API extern oEbmlDecl const O_CmcIssueReleaseMonth;
 ODDCMC_API extern oEbmlDecl const O_CmcIssueReleaseDay;
-ODDCMC_API extern oEbmlDecl const O_CmcIssueLanguage;
-ODDCMC_API extern oEbmlDecl const O_CmcIssuePages;
 
 ODDCMC_API extern oEbmlDecl const O_CmcStories;
 ODDCMC_API extern oEbmlDecl const O_CmcStory;

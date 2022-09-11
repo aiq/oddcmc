@@ -1,10 +1,6 @@
-#ifndef ODDCMC_CMC_INFO_H
-#define ODDCMC_CMC_INFO_H
+#include "oddcmc/oCmc.h"
 
-#include "oddcmc/apidecl.h"
-#include "oddcmc/cmcdecl.h"
-#include "oddcmc/oCmcRelease.h"
-#include "oddebml/oEbmlElement.h"
+#include "oddebml/error.h"
 
 /*******************************************************************************
 ********************************************************* Types and Definitions
@@ -12,11 +8,7 @@
  
 *******************************************************************************/
 
-struct oCmcInfo
-{
-   oCmcRelease release;
-};
-typedef struct oCmcInfo oCmcInfo;
+
 
 /*******************************************************************************
 ********************************************************************* Functions
@@ -24,10 +16,18 @@ typedef struct oCmcInfo oCmcInfo;
  init
 *******************************************************************************/
 
-ODDCMC_API void deref_cmc_info_o( oCmcInfo info[static 1] );
+void deref_cmc_o( oCmc cmc[static 1] )
+{
+   *cmc = (oCmc){0};
+}
 
-ODDCMC_API bool unmarshal_cmc_info_o( oEbmlElement const elem[static 1],
-                                      oCmcInfo info[static 1],
-                                      cErrorStack es[static 1] );
+bool unmarshal_cmc_o( oEbmlElement const elem[static 1],
+                      oCmc cmc[static 1],
+                      cErrorStack es[static 1] )
+{
+   if ( not eq_ebml_id_o( elem->id, O_Cmc.id ) )
+      return push_missing_ebml_id_error_o( es, O_Cmc.id );
 
-#endif
+   cScanner* sca = &make_scanner_c_( elem->bytes.s, elem->bytes.v );
+   return sca->space == 0;
+}

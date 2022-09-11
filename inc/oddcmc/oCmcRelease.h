@@ -17,10 +17,10 @@ struct oCmcRelease
 {
    CString* title;
    CString* type;
+   cIso639 language;
    cYmd date;
    CString* publisher;
    CString* imprint;
-   cIso639 language;
 };
 typedef struct oCmcRelease oCmcRelease;
 

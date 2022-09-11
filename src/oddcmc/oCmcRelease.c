@@ -1,5 +1,7 @@
 #include "oddcmc/oCmcRelease.h"
 
+#include "_/unmarshal.h"
+#include "clingo/container/CBitVec.h"
 #include "clingo/io/c_ImpExpError.h"
 #include "clingo/type/int32.h"
 #include "clingo/type/int8.h"
@@ -25,115 +27,52 @@ bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
                               oCmcRelease rel[static 1],
                               cErrorStack es[static 1] )
 {
-   *rel = (oCmcRelease){0};
+   deref_cmc_release_o( rel );
 
    if ( not eq_ebml_id_o( elem->id, O_CmcRelease.id ) )
-      return push_missing_ebml_id_error_o( es, O_CmcInfo.id );
+      return push_missing_ebml_id_error_o( es, O_CmcRelease.id );
 
    cScanner* sca = &make_scanner_c_( elem->bytes.s, elem->bytes.v );
-   // -------------------------------------------------------------------- Title
-   if ( not on_ebml_id_o( sca, O_CmcTitle.id ) )
-      return push_missing_ebml_id_error_o( es, O_CmcTitle.id );
+   if ( not unmarshal_req_ebml_utf8_o( // -------------------------------- Title
+      sca, &(rel->title), O_CmcTitle.id, es
+   ) )
+      return false;
 
-   cChars title;
-   if ( not view_ebml_utf8_element_o( sca, &title ) )
-      return push_imp_exp_error_c( es, sca->err ) or
-             push_unmarshal_ebml_error_o( es, O_CmcTitle.id, o_EbmlUtf8 );
+   if ( not unmarshal_req_ebml_string_o( // ------------------------------- Type
+      sca, &(rel->type), O_CmcType.id, es
+   ) )
+      return false;
 
-   rel->title = retain_c( make_string_c( title ) );
-   if ( rel->title == NULL )
-      return push_errno_error_c( es, ENOMEM );
+   if ( not unmarshal_opt_ebml_iso639_o( // --------------------------- Language
+      sca, &(rel->language), O_CmcLanguage.id, es
+   ) )
+      return false;
 
-   // --------------------------------------------------------------------- Type
-   if ( not on_ebml_id_o( sca, O_CmcType.id ) )
-      return push_missing_ebml_id_error_o( es, O_CmcType.id );
+   if ( not unmarshal_opt_ebml_year_o( // --------------------------------- Year
+      sca, &(rel->date.year), O_CmcReleaseYear.id, es
+   ) )
+      return false;
 
-   cChars type;
-   if ( not view_ebml_string_element_o( sca, &type ) )
-      return push_imp_exp_error_c( es, sca->err ) or
-             push_unmarshal_ebml_error_o( es, O_CmcType.id, o_EbmlString );
+   if ( not unmarshal_opt_ebml_month_o( // ------------------------------- Month
+      sca, &(rel->date.month), O_CmcReleaseMonth.id, es
+   ) )
+      return false;
 
-   rel->type = retain_c( make_string_c( type ) );
-   if ( rel->type == NULL )
-      return push_errno_error_c( es, ENOMEM );
+   if ( not unmarshal_opt_ebml_day_o( // ----------------------------------- Day
+      sca, &(rel->date.day), O_CmcReleaseDay.id, es
+   ) )
+      return false;
 
-   // --------------------------------------------------------------------- Year
-   if ( on_ebml_id_o( sca, O_CmcReleaseYear.id ) )
-   {
-      uint64_t year;
-      if ( not scan_ebml_uint_element_o( sca, &year ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, O_CmcReleaseYear.id, o_EbmlUint );
-   
-      if ( not uint64_to_int32_c( year, &(rel->date.year) ) )
-         return push_errno_error_c( es, ERANGE ) or
-                push_lit_error_c( es, "CMCReleaseYear value out of range" );
-   }
-
-   // -------------------------------------------------------------------- Month
-   if ( on_ebml_id_o( sca, O_CmcReleaseMonth.id ) )
-   {
-      uint64_t month;
-      if ( not scan_ebml_uint_element_o( sca, &month ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, O_CmcReleaseMonth.id, o_EbmlUint );
-
-      if ( not uint64_to_month_c( month, &(rel->date.month ) ) )
-         return push_errno_error_c( es, ERANGE ) or
-                push_lit_error_c( es, "CMCReleaseMonth value out of range" );
-   }
-
-   // ---------------------------------------------------------------------- Day
-   if ( on_ebml_id_o( sca, O_CmcReleaseDay.id ) )
-   {
-      uint64_t day;
-      if ( not scan_ebml_uint_element_o( sca, &day ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, O_CmcReleaseDay.id, o_EbmlUint );
-
-      if ( not uint64_to_int8_c( day, &(rel->date.day) ) )
-         return push_errno_error_c( es, ERANGE ) or
-                push_lit_error_c( es, "CMCReleaseDay value out of range" );
-   }
-
-   // ---------------------------------------------------------------- Publisher
-   if ( on_ebml_id_o( sca, O_CmcPublisher.id ) )
-   {
-      cChars publisher;
-      if ( not view_ebml_utf8_element_o( sca, &publisher ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, O_CmcPublisher.id, o_EbmlUtf8 );
-
-      rel->publisher = retain_c( make_string_c( publisher ) );
-      if ( rel->publisher == NULL )
-         return push_errno_error_c( es, ENOMEM );
-   }
+   if ( not unmarshal_opt_ebml_utf8_o( // ---------------------------- Publisher
+      sca, &(rel->publisher), O_CmcPublisher.id, es
+   ) )
+      return false;
 
    // ------------------------------------------------------------------ Imprint
-   if ( on_ebml_id_o( sca, O_CmcImprint.id ) )
-   {
-      cChars imprint;
-      if ( not view_ebml_utf8_element_o( sca, &imprint ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, O_CmcImprint.id, o_EbmlUtf8 );
-   
-      rel->imprint = retain_c( make_string_c( imprint ) );
-      if ( rel->imprint == NULL )
-         return push_errno_error_c( es, ENOMEM );
-   }
-
-   // ----------------------------------------------------------------- Language
-   if ( on_ebml_id_o( sca, O_CmcLanguage.id ) )
-   {
-      cChars language;
-      if ( not view_ebml_string_element_o( sca, &language ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, O_CmcLanguage.id, o_EbmlString );
-
-      rel->language = iso639_c( language );
-      if ( not is_iso639_bib_c( rel->language ) )
-         return push_errno_error_c( es, ENOMEM );
-   }
+   if ( not unmarshal_opt_ebml_utf8_o(
+      sca, &(rel->imprint), O_CmcImprint.id, es
+   ) )
+      return false;
 
    return sca->space == 0;
 }

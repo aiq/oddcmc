@@ -4,6 +4,7 @@
 #include "clingo/container/CBitVec.h"
 #include "clingo/string/CString.h"
 #include "clingo/time/cYmd.h"
+#include "iso639/cIso639.h"
 #include "oddcmc/apidecl.h"
 #include "oddebml/oEbmlElement.h"
 
@@ -19,8 +20,9 @@ struct oCmcIssue
    uint64_t volume;
    uint64_t number;
    CString* variant;
+   cIso639 language;
+   CBitVec* pages;
    cYmd date;
-   CString* language;
 };
 typedef struct oCmcIssue oCmcIssue;
 

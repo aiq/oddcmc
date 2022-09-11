@@ -16,6 +16,11 @@
  init
 *******************************************************************************/
 
+void deref_cmc_info_o( oCmcInfo info[static 1] )
+{
+   *info = (oCmcInfo){0};
+}
+
 bool unmarshal_cmc_info_o( oEbmlElement const elem[static 1],
                            oCmcInfo info[static 1],
                            cErrorStack es[static 1] )
