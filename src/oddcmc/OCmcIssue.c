@@ -51,7 +51,7 @@ void mimic_cmc_issue_o( OCmcIssue issue[static 1],
 }
 
 bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
-                            OCmcIssue* issue,
+                            OCmcIssue issue[static 1],
                             cErrorStack es[static 1] )
 {
    must_exist_c_( issue );

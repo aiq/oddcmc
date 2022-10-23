@@ -45,7 +45,7 @@ void mimic_cmc_release_o( OCmcRelease rel[static 1],
 }
 
 bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
-                              OCmcRelease* rel,
+                              OCmcRelease rel[static 1],
                               cErrorStack es[static 1] )
 {
    must_exist_c_( rel );

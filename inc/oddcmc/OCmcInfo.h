@@ -36,7 +36,7 @@ ODDCMC_API void mimic_cmc_info_o( OCmcInfo info[static 1],
                                   OCmcInfo const src[static 1] );
 
 ODDCMC_API bool unmarshal_cmc_info_o( oEbmlElement const elem[static 1],
-                                      OCmcInfo* info,
+                                      OCmcInfo info[static 1],
                                       cErrorStack es[static 1] );
 
 #endif

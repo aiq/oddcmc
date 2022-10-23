@@ -46,7 +46,7 @@ ODDCMC_API void mimic_cmc_story_o( OCmcStory story[static 1],
                                    OCmcStory const src[static 1] );
 
 ODDCMC_API bool unmarshal_cmc_story_o( oEbmlElement const elem[static 1],
-                                       OCmcStory* story,
+                                       OCmcStory story[static 1],
                                        cErrorStack es[static 1] );
 
 #endif

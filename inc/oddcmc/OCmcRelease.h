@@ -43,7 +43,7 @@ ODDCMC_API void mimic_cmc_release_o( OCmcRelease rel[static 1],
                                      OCmcRelease const src[static 1] );
 
 ODDCMC_API bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
-                                         OCmcRelease* rel,
+                                         OCmcRelease rel[static 1],
                                          cErrorStack es[static 1] );
 
 #endif

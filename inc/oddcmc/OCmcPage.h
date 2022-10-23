@@ -46,7 +46,7 @@ ODDCMC_API void mimic_cmc_page_o( OCmcPage page[static 1],
                                   OCmcPage const src[static 1] );
 
 ODDCMC_API bool unmarshal_cmc_page_o( oEbmlElement const elem[static 1],
-                                      OCmcPage* page,
+                                      OCmcPage page[static 1],
                                       cErrorStack es[static 1] );
 
 #endif

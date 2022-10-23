@@ -53,7 +53,7 @@ ODDCMC_API void mimic_cmc_issue_o( OCmcIssue issue[static 1],
                                    OCmcIssue const src[static 1] );
 
 ODDCMC_API bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
-                                       OCmcIssue* issue,
+                                       OCmcIssue issue[static 1],
                                        cErrorStack es[static 1] );
 
 #endif

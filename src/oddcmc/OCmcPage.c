@@ -44,7 +44,7 @@ void mimic_cmc_page_p( OCmcPage page[static 1], OCmcPage const src[static 1] )
 }
 
 bool unmarshal_cmc_page_o( oEbmlElement const elem[static 1],
-                           OCmcPage* page,
+                           OCmcPage page[static 1],
                            cErrorStack es[static 1] )
 {
    must_exist_c_( page );

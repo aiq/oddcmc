@@ -25,11 +25,16 @@ cMeta const O_CmcMeta = {
  init
 *******************************************************************************/
 
+void mimic_cmc_o( OCmc cmc[static 1], OCmc const src[static 1] )
+{
+   replace_c_( cmc->info, src->info );
+   replace_c_( cmc->pages, src->pages );
+}
+
 bool unmarshal_cmc_o( oEbmlElement const elem[static 1],
-                      OCmc* cmc,
+                      OCmc cmc[static 1],
                       cErrorStack es[static 1] )
 {
-   must_exist_c_( cmc );
    cleanup( cmc );
    *cmc = (OCmc){0};
 
