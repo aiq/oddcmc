@@ -1,7 +1,8 @@
-#ifndef ODDCMC_CMC_ISSUE_H
-#define ODDCMC_CMC_ISSUE_H
+#ifndef ODDCMC_OCMC_ISSUE_H
+#define ODDCMC_OCMC_ISSUE_H
 
 #include "clingo/container/CBitVec.h"
+#include "clingo/container/vec.h"
 #include "clingo/string/CString.h"
 #include "clingo/time/cYmd.h"
 #include "iso639/cIso639.h"
@@ -14,7 +15,9 @@
 
 *******************************************************************************/
 
-struct oCmcIssue
+ODDCMC_API extern cMeta const O_CmcIssueMeta;
+
+struct OCmcIssue
 {
    CString* series;
    uint64_t volume;
@@ -24,7 +27,15 @@ struct oCmcIssue
    CBitVec* pages;
    cYmd date;
 };
-typedef struct oCmcIssue oCmcIssue;
+typedef struct OCmcIssue OCmcIssue;
+
+OBJ_VEC_DEF_C_(
+   ODDCMC_API,       // LipApi
+   OCmcIssues,       // VecType
+   OCmcIssue,        // ObjType
+   cmc_issues_o,     // FuncSuffix
+   O_CmcIssuesMeta   // Meta
+)
 
 /*******************************************************************************
 ********************************************************************* Functions
@@ -32,10 +43,17 @@ typedef struct oCmcIssue oCmcIssue;
 
 *******************************************************************************/
 
-ODDCMC_API void deref_cmc_issue_o( oCmcIssue issue[static 1] );
+#define new_cmc_issue_o_()                                                     \
+   new_object_c_( OCmcIssue, &O_CmcIssueMeta )
+
+#define let_cmc_issue_o_()                                                     \
+   let_object_c_( OCmcIssue, &O_CmcIssueMeta )
+
+ODDCMC_API void mimic_cmc_issue_o( OCmcIssue issue[static 1],
+                                   OCmcIssue const src[static 1] );
 
 ODDCMC_API bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
-                                       oCmcIssue issue[static 1],
+                                       OCmcIssue* issue,
                                        cErrorStack es[static 1] );
 
 #endif

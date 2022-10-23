@@ -97,6 +97,10 @@ oEbmlDeclSlice get_cmc_decl_o( oVarEbmlDeclSlice buf )
                   O_CmcIssueReleaseYear,
                   O_CmcIssueReleaseMonth,
                   O_CmcIssueReleaseDay,
+            O_CmcStories,
+               O_CmcStory,
+                  O_CmcStoryTitle,
+                  O_CmcStoryPages,
          O_CmcPages,
             O_CmcPage,
                O_CmcPageNumber,
@@ -107,8 +111,8 @@ oEbmlDeclSlice get_cmc_decl_o( oVarEbmlDeclSlice buf )
    buf.s = set_ebml_decl_slice_c( buf, src );
    if ( buf.s != src.s )
    {
-      return (oEbmlDeclSlice)invalid_slice_c_();
+      return (oEbmlDeclSlice)invalid_c_();
    }
 
-   return as_ebml_decl_slice_c( buf );
+   return as_c_( oEbmlDeclSlice, buf );
 }

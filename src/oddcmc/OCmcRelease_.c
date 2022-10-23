@@ -1,4 +1,4 @@
-#include "oddcmc/oCmcRelease.h"
+#include "oddcmc/OCmcRelease.h"
 
 #include "_/unmarshal.h"
 #include "clingo/container/CBitVec.h"
@@ -9,25 +9,48 @@
 #include "oddebml/error.h"
 
 /*******************************************************************************
+********************************************************* Types and Definitions
+********************************************************************************
+
+*******************************************************************************/
+
+static inline void cleanup( void* instance )
+{
+   OCmcRelease* rel = instance;
+   release_c( rel->title );
+   release_c( rel->type );
+   release_c( rel->publisher );
+   release_c( rel->imprint );
+}
+
+cMeta const O_CmcReleaseMeta = {
+   .desc = stringify_c_( OCmcRelease ),
+   .cleanup = &cleanup
+};
+
+/*******************************************************************************
 ********************************************************************* Functions
 ********************************************************************************
  init
 *******************************************************************************/
 
-void deref_cmc_release_o( oCmcRelease rel[static 1] )
+void mimic_cmc_release_o( OCmcRelease rel[static 1],
+                          OCmcRelease const src[static 1] )
 {
-   release_c( rel->title );
-   release_c( rel->type );
-   release_c( rel->publisher );
-   release_c( rel->imprint );
-   *rel = (oCmcRelease){0};
+   replace_c_( rel->title, src->title );
+   replace_c_( rel->type, src->type );
+   rel->language = src->language;
+   rel->date = src->date;
+   replace_c_( rel->publisher, src->publisher );
 }
 
 bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
-                              oCmcRelease rel[static 1],
+                              OCmcRelease* rel,
                               cErrorStack es[static 1] )
 {
-   deref_cmc_release_o( rel );
+   must_exist_c_( rel );
+   cleanup( rel );
+   *rel = (OCmcRelease){0};
 
    if ( not eq_ebml_id_o( elem->id, O_CmcRelease.id ) )
       return push_missing_ebml_id_error_o( es, O_CmcRelease.id );
@@ -68,8 +91,7 @@ bool unmarshal_cmc_release_o( oEbmlElement const elem[static 1],
    ) )
       return false;
 
-   // ------------------------------------------------------------------ Imprint
-   if ( not unmarshal_opt_ebml_utf8_o(
+   if ( not unmarshal_opt_ebml_utf8_o( // ------------------------------ Imprint
       sca, &(rel->imprint), O_CmcImprint.id, es
    ) )
       return false;

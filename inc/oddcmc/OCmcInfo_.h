@@ -1,9 +1,9 @@
-#ifndef ODDCMC_CMC_PAGE_H
-#define ODDCMC_CMC_PAGE_H
+#ifndef ODDCMC_OCMC_INFO_H
+#define ODDCMC_OCMC_INFO_H
 
-#include "clingo/container/CByteVec.h"
-#include "clingo/string/CStringList.h"
 #include "oddcmc/apidecl.h"
+#include "oddcmc/cmcdecl.h"
+#include "oddcmc/OCmcRelease.h"
 #include "oddebml/oEbmlElement.h"
 
 /*******************************************************************************
@@ -12,13 +12,13 @@
  
 *******************************************************************************/
 
-struct oCmcPage
+ODDCMC_API extern cMeta const O_CmcInfoMeta;
+
+struct OCmcInfo
 {
-   CByteVec* data;
-   uint64_t number;
-   CStringList* content;
+   OCmcRelease* release;
 };
-typedef struct oCmcPage oCmcPage;
+typedef struct OCmcInfo OCmcInfo;
 
 /*******************************************************************************
 ********************************************************************* Functions
@@ -26,10 +26,17 @@ typedef struct oCmcPage oCmcPage;
  init
 *******************************************************************************/
 
-ODDCMC_API void deref_cmc_page_o( oCmcPage page[static 1] );
+#define new_cmc_info_o_()                                                      \
+   new_object_c_( OCmcInfo, &O_CmcInfoMeta )
 
-ODDCMC_API bool unmarshal_cmc_page_o( oEbmlElement const elem[static 1],
-                                      oCmcPage page[static 1],
+#define let_cmc_info_o_()                                                      \
+   let_object_c_( OCmcInfo, &O_CmcInfoMeta )
+
+ODDCMC_API void mimic_cmc_info_o( OCmcInfo info[static 1],
+                                  OCmcInfo const src[static 1] );
+
+ODDCMC_API bool unmarshal_cmc_info_o( oEbmlElement const elem[static 1],
+                                      OCmcInfo* info,
                                       cErrorStack es[static 1] );
 
 #endif

@@ -16,7 +16,7 @@ set( LIB_NAME ${PROJECT_NAME} )
 
 # where to look first for modules, before ${CMAKE_ROOT}/Modules/ is checked
 set( ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../.. )
-set( BIN_DIR ${ROOT}/bin )
+set( APP_DIR ${ROOT}/app )
 set( DOC_DIR ${ROOT}/doc )
 set( INC_DIR ${ROOT}/inc )
 set( SRC_DIR ${ROOT}/src )
@@ -34,7 +34,7 @@ include( ${CMAKE_CURRENT_SOURCE_DIR}/FileLists.cmake )
 fetchcontent_declare(
     oddebml
     GIT_REPOSITORY "https://github.com/aiq/oddebml"
-    GIT_TAG "4b7268c1a89f585fc692eff3a70947c04fa01759"
+    GIT_TAG "main"
     SOURCE_SUBDIR "mk/cmake"
 )
 fetchcontent_makeavailable( oddebml )
@@ -42,10 +42,17 @@ fetchcontent_makeavailable( oddebml )
 fetchcontent_declare(
     iso639
     GIT_REPOSITORY "https://github.com/aiq/iso639"
-    GIT_TAG "5371370e49f6f2d97525408c0d8e8fcb7aedb5e8"
+    GIT_TAG "main"
     SOURCE_SUBDIR "mk/cmake"
 )
 fetchcontent_makeavailable( iso639 )
+
+fetchcontent_declare(
+   raylib
+   GIT_REPOSITORY https://github.com/raysan5/raylib.git
+   GIT_TAG master
+)
+fetchcontent_makeavailable( raylib )
 
 ################################################################################
 # build - make
@@ -66,3 +73,11 @@ else()
     set( TEST_LINK_LIBS ${LIB_NAME} m oddebml iso639 )
 endif()
 add_tests( "${TEST_FILES}" "${TEST_INC_DIRS}" "${TEST_LINK_LIBS}" )
+
+set( APP_INC_DIRS ${INC_DIR} ${SRC_DIR} ${APP_DIR} )
+if( WIN32 )
+   set( APP_LINK_LIBS ${LIB_NAME} clingo )
+else()
+   set( APP_LINK_LIBS ${LIB_NAME} m clingo raylib )
+endif()
+add_apps( "${APP_FILES}" "${APP_INC_DIRS}" "${APP_LINK_LIBS}" )

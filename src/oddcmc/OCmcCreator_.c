@@ -1,8 +1,35 @@
-#include "oddcmc/oCmcCreator.h"
+#include "oddcmc/OCmcCreator.h"
 
 #include "_/unmarshal.h"
 #include "oddcmc/cmcdecl.h"
 #include "oddebml/error.h"
+
+/*******************************************************************************
+********************************************************* Types and Definitions
+********************************************************************************
+
+*******************************************************************************/
+
+static inline void cleanup( void* instance )
+{
+   OCmcCreator* creator = instance;
+   release_c( creator->name );
+   release_c( creator->job );
+   release_c( creator->pages );
+}
+
+cMeta const O_CmcCreatorMeta = {
+   .desc = stringify_c_( OCmcCreator ),
+   .cleanup = &cleanup
+};
+
+OBJ_VEC_IMPL_C_(
+   ,//optional       // Static
+   OCmcCreators,     // VecType
+   OCmcCreator,      // ObjType
+   cmc_creators_o,   // FuncSuffix
+   O_CmcCreatorsMeta // Meta
+)
 
 /*******************************************************************************
 ********************************************************************* Functions
@@ -10,19 +37,20 @@
 
 *******************************************************************************/
 
-void deref_cmc_creator_o( oCmcCreator creator[static 1] )
+void mimic_cmc_creator_o( OCmcCreator creator[static 1],
+                          OCmcCreator const src[static 1] )
 {
-   release_c( creator->name );
-   release_c( creator->job );
-   release_c( creator->pages );
-   *creator = (oCmcCreator){0};
+   replace_c_( creator->name, src->name );
+   replace_c_( creator->job, src->job );
+   replace_c_( creator->pages, src->pages );
 }
 
 bool unmarshal_cmc_creator_o( oEbmlElement const elem[static 1],
-                              oCmcCreator creator[static 1],
+                              OCmcCreator creator[static 1],
                               cErrorStack es[static 1] )
 {
-   deref_cmc_creator_o( creator );
+   cleanup( creator );
+   *creator = (OCmcCreator){0};
 
    if ( not eq_ebml_id_o( elem->id, O_CmcCreator.id ) )
       return push_missing_ebml_id_error_o( es, O_CmcCreator.id );

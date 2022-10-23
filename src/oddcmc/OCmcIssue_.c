@@ -1,4 +1,4 @@
-#include "oddcmc/oCmcIssue.h"
+#include "oddcmc/OCmcIssue.h"
 
 #include "_/unmarshal.h"
 #include "clingo/io/c_ImpExpError.h"
@@ -6,21 +6,57 @@
 #include "oddebml/error.h"
 
 /*******************************************************************************
+********************************************************* Types and Definitions
+********************************************************************************
+
+*******************************************************************************/
+
+static inline void cleanup( void* instance )
+{
+   OCmcIssue* issue = instance;
+   release_c( issue->series );
+   release_c( issue->variant );
+   release_c( issue->pages );
+}
+
+cMeta const O_CmcIssueMeta = {
+   .desc = stringify_c_( OCmcIssue ),
+   .cleanup = &cleanup
+};
+
+OBJ_VEC_IMPL_C_(
+   ,//optional       // Static
+   OCmcIssues,       // VecType
+   OCmcIssue,        // ObjType
+   cmc_issues_o,     // FuncSuffix
+   O_CmcIssuesMeta   // Meta
+)
+
+/*******************************************************************************
 ********************************************************************* Functions
 ********************************************************************************
 
 *******************************************************************************/
 
-void deref_cmc_issue_o( oCmcIssue issue[static 1] )
+void mimic_cmc_issue_o( OCmcIssue issue[static 1],
+                        OCmcIssue const src[static 1] )
 {
-
+   replace_c_( issue->series, src->series );
+   issue->volume = src->volume;
+   issue->number = src->number;
+   replace_c_( issue->variant, src->variant );
+   issue->language = src->language;
+   replace_c_( issue->pages, src->pages );
+   issue->date = src->date;
 }
 
 bool unmarshal_cmc_issue_o( oEbmlElement const elem[static 1],
-                            oCmcIssue issue[static 1],
+                            OCmcIssue* issue,
                             cErrorStack es[static 1] )
 {
-   *issue = (oCmcIssue){0};
+   must_exist_c_( issue );
+   cleanup( issue );
+   *issue = (OCmcIssue){0};
 
    if ( not eq_ebml_id_o( elem->id, O_CmcIssue.id ) )
       return push_missing_ebml_id_error_o( es, O_CmcIssue.id );

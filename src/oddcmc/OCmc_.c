@@ -1,10 +1,6 @@
-#ifndef ODDCMC_CMC_INFO_H
-#define ODDCMC_CMC_INFO_H
+#include "oddcmc/OCmc.h"
 
-#include "oddcmc/apidecl.h"
-#include "oddcmc/cmcdecl.h"
-#include "oddcmc/oCmcRelease.h"
-#include "oddebml/oEbmlElement.h"
+#include "oddebml/error.h"
 
 /*******************************************************************************
 ********************************************************* Types and Definitions
@@ -12,11 +8,16 @@
  
 *******************************************************************************/
 
-struct oCmcInfo
+static inline void cleanup( void* instance )
 {
-   oCmcRelease release;
+   OCmc* cmc = instance;
+   release_c( cmc->info );
+}
+
+cMeta const O_CmcMeta = {
+   .desc = stringify_c_( OCmc ),
+   .cleanup = &cleanup
 };
-typedef struct oCmcInfo oCmcInfo;
 
 /*******************************************************************************
 ********************************************************************* Functions
@@ -24,10 +25,17 @@ typedef struct oCmcInfo oCmcInfo;
  init
 *******************************************************************************/
 
-ODDCMC_API void deref_cmc_info_o( oCmcInfo info[static 1] );
+bool unmarshal_cmc_o( oEbmlElement const elem[static 1],
+                      OCmc* cmc,
+                      cErrorStack es[static 1] )
+{
+   must_exist_c_( cmc );
+   cleanup( cmc );
+   *cmc = (OCmc){0};
 
-ODDCMC_API bool unmarshal_cmc_info_o( oEbmlElement const elem[static 1],
-                                      oCmcInfo info[static 1],
-                                      cErrorStack es[static 1] );
+   if ( not eq_ebml_id_o( elem->id, O_Cmc.id ) )
+      return push_missing_ebml_id_error_o( es, O_Cmc.id );
 
-#endif
+   cScanner* sca = &make_scanner_c_( elem->bytes.s, elem->bytes.v );
+   return sca->space == 0;
+}
