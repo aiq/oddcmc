@@ -29,8 +29,7 @@ bool unmarshal_req_ebml_data_o( cScanner sca[static 1],
 
    cBytes bytes;
    if ( not view_ebml_binary_element_o( sca, &bytes ) )
-      return push_imp_exp_error_c( es, sca->err ) or
-             push_unmarshal_ebml_error_o( es, id, o_EbmlBinary );
+      return push_imp_ebml_error_o( es, sca, id, o_EbmlBinary );
 
    *vec = retain_c( make_byte_vec_c( bytes.s ) );
    if ( *vec == NULL )
@@ -52,8 +51,7 @@ bool unmarshal_req_ebml_string_o( cScanner sca[static 1],
 
    cChars type;
    if ( not view_ebml_string_element_o( sca, &type ) )
-      return push_imp_exp_error_c( es, sca->err ) or
-             push_unmarshal_ebml_error_o( es, id, o_EbmlString );
+      return push_imp_ebml_error_o( es, sca, id, o_EbmlString );
 
    *str = retain_c( make_string_c( type ) );
    if ( *str == NULL )
@@ -73,8 +71,7 @@ bool unmarshal_req_ebml_utf8_o( cScanner sca[static 1],
 
    cChars chars;
    if ( not view_ebml_utf8_element_o( sca, &chars ) )
-      return push_imp_exp_error_c( es, sca->err ) or
-             push_unmarshal_ebml_error_o( es, id, o_EbmlUtf8 );
+      return push_imp_ebml_error_o( es, sca, id, o_EbmlUtf8 );
 
    *str = retain_c( make_string_c( chars ) );
    if ( *str == NULL )
@@ -93,8 +90,7 @@ bool unmarshal_req_ebml_uint_o( cScanner sca[static 1],
       return push_missing_ebml_id_error_o( es, id );
 
    if ( not scan_ebml_uint_element_o( sca, val ) )
-      return push_imp_exp_error_c( es, sca->err ) or
-             push_unmarshal_ebml_error_o( es, id, o_EbmlUint );
+      return push_imp_ebml_error_o( es, sca, id, o_EbmlUint );
 
    return true;
 }
@@ -109,8 +105,7 @@ bool unmarshal_opt_ebml_string_o( cScanner sca[static 1],
    {
       cChars chars;
       if ( not view_ebml_string_element_o( sca, &chars ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlString );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlString );
 
       *str = retain_c( make_string_c( chars ) );
       if ( *str == NULL )
@@ -136,8 +131,7 @@ bool unmarshal_opt_ebml_string_list_o( cScanner sca[static 1],
       }
       cChars chars;
       if ( not view_ebml_string_element_o( sca, &chars ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlString );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlString );
 
       if ( not add_chars_to_string_list_c( *list, chars ) )
          return push_errno_error_c( es, ENOMEM );
@@ -156,8 +150,7 @@ bool unmarshal_opt_ebml_iso639_o( cScanner sca[static 1],
    {
       cChars chars;
       if ( not view_ebml_string_element_o( sca, &chars ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlString );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlString );
 
       *language = iso639_c( chars );
       if ( not is_iso639_bib_c( *language ) )
@@ -177,8 +170,7 @@ bool unmarshal_opt_ebml_year_o( cScanner sca[static 1],
    {
       uint64_t val;
       if ( not scan_ebml_uint_element_o( sca, &val ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlUint );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlUint );
    
       if ( not uint64_to_int32_c( val, year ) )
          return push_errno_error_c( es, ERANGE );
@@ -197,8 +189,7 @@ bool unmarshal_opt_ebml_month_o( cScanner sca[static 1],
    {
       uint64_t val;
       if ( not scan_ebml_uint_element_o( sca, &val ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlUint );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlUint );
 
       if ( not uint64_to_month_c( val, month ) )
          return push_errno_error_c( es, ERANGE );
@@ -217,8 +208,7 @@ bool unmarshal_opt_ebml_day_o( cScanner sca[static 1],
    {
       uint64_t val;
       if ( not scan_ebml_uint_element_o( sca, &val ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlUint );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlUint );
 
       if ( not uint64_to_int8_c( val, day ) )
          return push_errno_error_c( es, ERANGE );
@@ -237,8 +227,7 @@ bool unmarshal_opt_ebml_pages_o( cScanner sca[static 1],
    {
       cChars chars;
       if ( not view_ebml_string_element_o( sca, &chars ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlString );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlString );
 
       cScanner* bitVecSca = &make_scanner_c_( chars.s, chars.v );
       if ( not read_bit_vec_c( bitVecSca, pages, "list" ) )
@@ -258,8 +247,7 @@ bool unmarshal_opt_ebml_utf8_o( cScanner sca[static 1],
    {
       cChars chars;
       if ( not view_ebml_utf8_element_o( sca, &chars ) )
-         return push_imp_exp_error_c( es, sca->err ) or
-                push_unmarshal_ebml_error_o( es, id, o_EbmlUtf8 );
+         return push_imp_ebml_error_o( es, sca, id, o_EbmlUtf8 );
 
       *str = retain_c( make_string_c( chars ) );
       if ( *str == NULL )
