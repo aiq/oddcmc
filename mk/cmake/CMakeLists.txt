@@ -40,6 +40,14 @@ fetchcontent_declare(
 fetchcontent_makeavailable( oddebml )
 
 fetchcontent_declare(
+    oddjson
+    GIT_REPOSITORY "https://github.com/aiq/oddjson"
+    GIT_TAG "main"
+    SOURCE_SUBDIR "mk/cmake"
+)
+fetchcontent_makeavailable( oddjson )
+
+fetchcontent_declare(
     iso639
     GIT_REPOSITORY "https://github.com/aiq/iso639"
     GIT_TAG "main"
