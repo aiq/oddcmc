@@ -42,4 +42,5 @@ set( TEST_FILES
 ################################################################################
 set( APP_FILES
    ${APP_DIR}/cmc-editor/cmc-editor.c
+   ${APP_DIR}/cmc/cmc.c
 )
