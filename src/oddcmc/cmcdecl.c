@@ -52,8 +52,8 @@
    XMAP_C_( O_CmcPages, "Pages", 0x15e30a78, mand_, single_, o_EbmlMaster ) \
    XMAP_C_( O_CmcPage, "Page", 0x2f1206, mand_, mult_, o_EbmlMaster ) \
    XMAP_C_( O_CmcPageNumber, "PageNumber", 0xf1, mand_, single_, o_EbmlUint ) \
-   XMAP_C_( O_CmcPageData, "PageData", 0xf2, mand_, single_, o_EbmlBinary ) \
-   XMAP_C_( O_CmcPageContent, "PageContent", 0xf3, opt_, mult_, o_EbmlString )
+   XMAP_C_( O_CmcPageContent, "PageContent", 0xf3, opt_, mult_, o_EbmlString ) \
+   XMAP_C_( O_CmcPageData, "PageData", 0xf2, mand_, single_, o_EbmlBinary )
 
 #define XMAP_C_( Var, Name, Id, Mand, Mult, Type )           \
 oEbmlDecl const Var = ebml_decl_o_( Name, (oEbmlId){ .raw=Id }, Mand, Mult, Type );

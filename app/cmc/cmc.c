@@ -1,6 +1,8 @@
 #include "clingo/io/print.h"
 #include "clingo/type/cCharsSlice.h"
 
+#include "pack.h"
+
 int main( int argc, char* argv[] )
 {
    if ( argc < 2 )
@@ -9,15 +11,23 @@ int main( int argc, char* argv[] )
       return EXIT_FAILURE;
    }
 
+   cErrorStack* es = &error_stack_c_( 256 );
+
    cVarCharsSlice args = heap_slice_c_( argc, cChars );
    for ( int i = 0; i < argc; ++i )
    {
       args.v[i] = c_c( argv[i] );
    }
 
-   for_each_c_( cChars const*, itr, mid_c_(cVarCharsSlice, args, 1 ) )
+   cChars subcmd = args.v[1];
+   cCharsSlice subargs = mid_c_( cCharsSlice, args, 2 );
+   if ( chars_is_c( subcmd, "pack" ) )
    {
-      println_c_( "{i64} - {cs}", index_of_c_( args, itr ), *itr );
+      pack_cmc( subargs, es );
+   }
+   else
+   {
+      println_c_( "unknown subcmd {cs:Q}", subcmd );
    }
 
    free( args.v );

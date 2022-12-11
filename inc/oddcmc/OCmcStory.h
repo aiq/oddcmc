@@ -24,7 +24,7 @@ typedef struct OCmcStory OCmcStory;
 
 OBJ_VEC_DEF_C_(
    ODDCMC_API,       // LibApi
-   OCmcStory,        // VecType
+   OCmcStories,      // VecType
    OCmcStory,        // ObjType
    cmc_stories_c,    // FuncSuffix
    O_CmcStoriesMeta  // Meta

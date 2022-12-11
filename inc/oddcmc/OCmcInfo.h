@@ -3,7 +3,10 @@
 
 #include "oddcmc/apidecl.h"
 #include "oddcmc/cmcdecl.h"
+#include "oddcmc/OCmcCreator.h"
+#include "oddcmc/OCmcIssue.h"
 #include "oddcmc/OCmcRelease.h"
+#include "oddcmc/OCmcStory.h"
 #include "oddebml/oEbmlElement.h"
 
 /*******************************************************************************
@@ -17,6 +20,9 @@ ODDCMC_API extern cMeta const O_CmcInfoMeta;
 struct OCmcInfo
 {
    OCmcRelease* release;
+   OCmcCreators* creators;
+   OCmcIssues* issues;
+   OCmcStories* stories;
 };
 typedef struct OCmcInfo OCmcInfo;
 

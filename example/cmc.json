@@ -1,0 +1,47 @@
+{
+   "Info": {
+      "Release": {
+         "Title": "utf8",
+         "Type": "string",
+         "Language": "iso639",
+         "ReleaseYear": 2002,
+         "ReleaseMonth": 11,
+         "ReleaseDay": 8,
+         "Publisher": "utf8",
+         "Imprint": "utf8"
+      },
+      "Creators": [
+         {
+            "Name": "utf8",
+            "Job": "string",
+            "Pages": "string"
+         }
+      ],
+      "Issues": [
+         {
+            "Series": "utf8",
+            "Volume": 1,
+            "Number": 1,
+            "Variant": "string",
+            "Language": "iso639",
+            "Pages": "string",
+            "ReleaseYear": 2000,
+            "ReleaseMonth": 11,
+            "ReleaseDay": 8
+         }
+      ],
+      "Stories": [
+         {
+            "Title": "utf8",
+            "Pages": "string"
+         }
+      ]
+   },
+   "Pages": [
+      {
+         "Number": 13,
+         "Content": "string",
+         "DataPath": ""
+      }
+   ]
+}
